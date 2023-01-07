@@ -33,7 +33,7 @@
         android:text="Equipo : Carlos alfonso barron rivera, Luis Jorge Guadarrama Hidalgo, Edgar Uriel Alvarez Alvarez,Jean michell Serna Caballero " />
 
 
-    TextView
+    <TextView
     android:id="@+id/lblConexion"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
