@@ -8,6 +8,9 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,11 +20,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
     TextView lblCapacitor;
     TextView lblRPM;
     String resC = "";
     String resRPM = "";
+    EditText edt_angulo, edt_velocidad;
+    TextView altura_max, rango_max, tiempo;
+    Button btn;
     int state = 0;
 
     Handler bluetoothIn;
@@ -35,6 +41,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bluetoothIn = new Handler() {
             public void handleMessage(android.os.Message msg) {
                 if (msg.what == handlerState) {
@@ -67,6 +74,14 @@ public class MainActivity extends Activity {
         VerificarEstadoBT();
         lblCapacitor = (TextView)findViewById(R.id.lblCpacitorResultado);
         lblRPM = (TextView)findViewById(R.id.lblRPMResultado);
+
+        edt_angulo = (EditText) findViewById(R.id.angulo);
+        edt_velocidad = (EditText) findViewById(R.id.velocidad);
+        altura_max = (TextView) findViewById(R.id.altura_max);
+        rango_max = (TextView) findViewById(R.id.rango_max);
+        tiempo = (TextView) findViewById(R.id.tiempo);
+        btn= (Button) findViewById(R.id.btn);
+        btn.setOnClickListener(this);
     }
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException
@@ -124,6 +139,25 @@ public class MainActivity extends Activity {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, 1);
             }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn) {
+
+            double velocidad = Double.parseDouble(edt_velocidad.getText().toString());
+            double angulo = Double.parseDouble(edt_angulo.getText().toString());
+            angulo = Math.toRadians(angulo);
+            double v_x = velocidad * Math.cos(angulo);
+            double v_y = velocidad * Math.sin(angulo);
+            double gravedad = 9.81;
+            double h_max = Math.pow(v_y, 2) / (2 * gravedad);
+            double rango = Math.pow(v_x, 2) / (2 * gravedad);
+            double t = 2 * v_y / gravedad;
+            altura_max.setText(String.format("%.2f", h_max));
+            rango_max.setText(String.format("%.2f", rango));
+            tiempo.setText(String.format("%.2f", t));
         }
     }
 
