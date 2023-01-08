@@ -83,13 +83,35 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rango(m):" />
+        <EditText
+            android:id="@+id/edt_rango"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="number" />
+        <Button
+            android:id="@+id/btn_rango"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Calcular" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Angulo(°):" />
+            android:text="Angulo: " />
         <TextView
             android:id="@+id/angulo"
             android:layout_width="wrap_content"
@@ -103,7 +125,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Altura máxima(m):"/>
+            android:text="Altura máxima: "/>
         <TextView
             android:id="@+id/altura_max"
             android:layout_width="wrap_content"
@@ -117,9 +139,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rango máximo(m):"/>
+            android:text="Rango: "/>
         <TextView
-            android:id="@+id/rango_max"
+            android:id="@+id/rango"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -131,7 +153,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tiempo(s):"/>
+            android:text="Tiempo: "/>
         <TextView
             android:id="@+id/tiempo"
             android:layout_width="wrap_content"

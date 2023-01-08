@@ -25,9 +25,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     TextView lblRPM;
     String resC = "";
     String resRPM = "";
-    EditText edt_velocidad, edt_angulo, edt_altura_maxima;
-    TextView angulo, altura_max, rango_max, tiempo;
-    Button btn_angulo, btn_altura_maxima;
+    EditText edt_velocidad, edt_angulo, edt_altura_maxima, edt_rango;
+    TextView angulo, altura_max, rango, tiempo;
+    Button btn_angulo, btn_altura_maxima, btn_range;
     int state = 0;
 
     Handler bluetoothIn;
@@ -78,14 +78,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         edt_velocidad = (EditText) findViewById(R.id.edt_velocidad);
         edt_angulo = (EditText) findViewById(R.id.edt_angulo);
         edt_altura_maxima = (EditText) findViewById(R.id.edt_altura_maxima);
+        edt_rango = (EditText) findViewById(R.id.edt_rango);
         altura_max = (TextView) findViewById(R.id.altura_max);
         angulo = (TextView) findViewById(R.id.angulo);
-        rango_max = (TextView) findViewById(R.id.rango_max);
+        rango = (TextView) findViewById(R.id.rango);
         tiempo = (TextView) findViewById(R.id.tiempo);
         btn_angulo = (Button) findViewById(R.id.btn_angulo);
         btn_altura_maxima = (Button) findViewById(R.id.btn_altura_maxima);
+        btn_range = (Button) findViewById(R.id.btn_rango);
         btn_angulo.setOnClickListener(this);
         btn_altura_maxima.setOnClickListener(this);
+        btn_range.setOnClickListener(this);
     }
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException
@@ -148,7 +151,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        double velocidad, angle, v_x, v_y, h_max, rango, t, gravedad = 9.81;
+        double velocidad, angle, v_x, v_y, h_max, range, t, gravedad = 9.81;
         velocidad = Double.parseDouble(edt_velocidad.getText().toString());
         switch (view.getId()) {
             case R.id.btn_angulo:
@@ -158,24 +161,43 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 v_x = velocidad * Math.cos(angle);
                 v_y = velocidad * Math.sin(angle);
                 h_max = Math.pow(v_y, 2) / (2 * gravedad);
-                rango = Math.pow(v_x, 2) / (2 * gravedad);
+                range = Math.pow(v_x, 2) / (2 * gravedad);
                 t = 2 * v_y / gravedad;
-                altura_max.setText(String.format("%.2f", h_max));
-                rango_max.setText(String.format("%.2f", rango));
-                tiempo.setText(String.format("%.2f", t));
+                altura_max.setText(String.format("%.3f", h_max));
+                rango.setText(String.format("%.3f", range));
+                tiempo.setText(String.format("%.3f", t));
+                edt_altura_maxima.setText("");
+                edt_rango.setText("");
                 break;
             case R.id.btn_altura_maxima:
                 h_max = Double.parseDouble(edt_altura_maxima.getText().toString());
                 v_y = Math.sqrt(2 * h_max * gravedad);
-                angle = Math.sinh(v_y / velocidad);
+                angle = Math.asin(v_y / velocidad);
                 v_x = velocidad * Math.cos(angle);
-                rango = Math.pow(v_x, 2) / (2 * gravedad);
+                range = Math.pow(v_x, 2) / (2 * gravedad);
                 t = 2 * v_y / gravedad;
                 angle = Math.toDegrees(angle);
-                angulo.setText(angle + "°");
-                altura_max.setText(String.format("%.2f", h_max));
-                rango_max.setText(String.format("%.2f", rango));
-                tiempo.setText(String.format("%.2f", t));
+                angulo.setText(String.format("%.3f°", angle));
+                altura_max.setText(String.format("%.3f", h_max));
+                rango.setText(String.format("%.3f", range));
+                tiempo.setText(String.format("%.3f", t));
+                edt_angulo.setText("");
+                edt_rango.setText("");
+                break;
+            case R.id.btn_rango:
+                range = Double.parseDouble(edt_rango.getText().toString());
+                v_x = Math.sqrt(2 * range * gravedad);
+                angle = Math.acos(v_x / velocidad);
+                v_y = velocidad * Math.sin(angle);
+                h_max = Math.pow(v_y, 2) / (2 * gravedad);
+                t = 2 * v_y / gravedad;
+                angle = Math.toDegrees(angle);
+                angulo.setText(String.format("%.3f °", angle));
+                altura_max.setText(String.format("%.3f m", h_max));
+                rango.setText(String.format("%.3f m", range));
+                tiempo.setText(String.format("%.3f s", t));
+                edt_angulo.setText("");
+                edt_altura_maxima.setText("");
                 break;
         }
     }
