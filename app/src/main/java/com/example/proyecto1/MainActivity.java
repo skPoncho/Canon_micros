@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     String resC = "";
     String resRPM = "";
     EditText edt_angulo, edt_velocidad;
-    TextView altura_max, rango_max, tiempo;
+    TextView angulo, altura_max, rango_max, tiempo;
     Button btn;
     int state = 0;
 
@@ -75,12 +75,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         lblCapacitor = (TextView)findViewById(R.id.lblCpacitorResultado);
         lblRPM = (TextView)findViewById(R.id.lblRPMResultado);
 
-        edt_angulo = (EditText) findViewById(R.id.angulo);
-        edt_velocidad = (EditText) findViewById(R.id.velocidad);
+        edt_angulo = (EditText) findViewById(R.id.edt_angulo);
+        edt_velocidad = (EditText) findViewById(R.id.edt_velocidad);
         altura_max = (TextView) findViewById(R.id.altura_max);
+        angulo = (TextView) findViewById(R.id.angulo);
         rango_max = (TextView) findViewById(R.id.rango_max);
         tiempo = (TextView) findViewById(R.id.tiempo);
-        btn= (Button) findViewById(R.id.btn);
+        btn = (Button) findViewById(R.id.btn_angulo);
         btn.setOnClickListener(this);
     }
 
@@ -144,13 +145,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn) {
+        if (view.getId() == R.id.btn_angulo) {
 
             double velocidad = Double.parseDouble(edt_velocidad.getText().toString());
-            double angulo = Double.parseDouble(edt_angulo.getText().toString());
-            angulo = Math.toRadians(angulo);
-            double v_x = velocidad * Math.cos(angulo);
-            double v_y = velocidad * Math.sin(angulo);
+            double angle = Double.parseDouble(edt_angulo.getText().toString());
+            angulo.setText(angle + "°");
+            angle = Math.toRadians(angle);
+            double v_x = velocidad * Math.cos(angle);
+            double v_y = velocidad * Math.sin(angle);
             double gravedad = 9.81;
             double h_max = Math.pow(v_y, 2) / (2 * gravedad);
             double rango = Math.pow(v_x, 2) / (2 * gravedad);
