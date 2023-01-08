@@ -25,9 +25,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     TextView lblRPM;
     String resC = "";
     String resRPM = "";
-    EditText edt_angulo, edt_velocidad;
+    EditText edt_velocidad, edt_angulo, edt_altura_maxima;
     TextView angulo, altura_max, rango_max, tiempo;
-    Button btn;
+    Button btn_angulo, btn_altura_maxima;
     int state = 0;
 
     Handler bluetoothIn;
@@ -75,14 +75,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         lblCapacitor = (TextView)findViewById(R.id.lblCpacitorResultado);
         lblRPM = (TextView)findViewById(R.id.lblRPMResultado);
 
-        edt_angulo = (EditText) findViewById(R.id.edt_angulo);
         edt_velocidad = (EditText) findViewById(R.id.edt_velocidad);
+        edt_angulo = (EditText) findViewById(R.id.edt_angulo);
+        edt_altura_maxima = (EditText) findViewById(R.id.edt_altura_maxima);
         altura_max = (TextView) findViewById(R.id.altura_max);
         angulo = (TextView) findViewById(R.id.angulo);
         rango_max = (TextView) findViewById(R.id.rango_max);
         tiempo = (TextView) findViewById(R.id.tiempo);
-        btn = (Button) findViewById(R.id.btn_angulo);
-        btn.setOnClickListener(this);
+        btn_angulo = (Button) findViewById(R.id.btn_angulo);
+        btn_altura_maxima = (Button) findViewById(R.id.btn_altura_maxima);
+        btn_angulo.setOnClickListener(this);
+        btn_altura_maxima.setOnClickListener(this);
     }
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException
@@ -145,21 +148,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_angulo) {
-
-            double velocidad = Double.parseDouble(edt_velocidad.getText().toString());
-            double angle = Double.parseDouble(edt_angulo.getText().toString());
-            angulo.setText(angle + "°");
-            angle = Math.toRadians(angle);
-            double v_x = velocidad * Math.cos(angle);
-            double v_y = velocidad * Math.sin(angle);
-            double gravedad = 9.81;
-            double h_max = Math.pow(v_y, 2) / (2 * gravedad);
-            double rango = Math.pow(v_x, 2) / (2 * gravedad);
-            double t = 2 * v_y / gravedad;
-            altura_max.setText(String.format("%.2f", h_max));
-            rango_max.setText(String.format("%.2f", rango));
-            tiempo.setText(String.format("%.2f", t));
+        double velocidad, angle, v_x, v_y, h_max, rango, t, gravedad = 9.81;
+        velocidad = Double.parseDouble(edt_velocidad.getText().toString());
+        switch (view.getId()) {
+            case R.id.btn_angulo:
+                angle = Double.parseDouble(edt_angulo.getText().toString());
+                angulo.setText(angle + "°");
+                angle = Math.toRadians(angle);
+                v_x = velocidad * Math.cos(angle);
+                v_y = velocidad * Math.sin(angle);
+                h_max = Math.pow(v_y, 2) / (2 * gravedad);
+                rango = Math.pow(v_x, 2) / (2 * gravedad);
+                t = 2 * v_y / gravedad;
+                altura_max.setText(String.format("%.2f", h_max));
+                rango_max.setText(String.format("%.2f", rango));
+                tiempo.setText(String.format("%.2f", t));
+                break;
+            case R.id.btn_altura_maxima:
+                h_max = Double.parseDouble(edt_altura_maxima.getText().toString());
+                v_y = Math.sqrt(2 * h_max * gravedad);
+                angle = Math.sinh(v_y / velocidad);
+                v_x = velocidad * Math.cos(angle);
+                rango = Math.pow(v_x, 2) / (2 * gravedad);
+                t = 2 * v_y / gravedad;
+                angle = Math.toDegrees(angle);
+                angulo.setText(angle + "°");
+                altura_max.setText(String.format("%.2f", h_max));
+                rango_max.setText(String.format("%.2f", rango));
+                tiempo.setText(String.format("%.2f", t));
+                break;
         }
     }
 
