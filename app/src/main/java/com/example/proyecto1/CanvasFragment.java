@@ -49,13 +49,24 @@ public class CanvasFragment extends Fragment {
             canvas.drawLine(40,40, 40, 800, paint); // y axis
             canvas.drawLine(20,780, 1000, 780, paint); // x axis
             if (getArguments() == null) return;
-            paint.setColor(Color.BLUE);
             double px, py;
+            double vel = Math.sqrt(Math.pow(v_x, 2) + Math.pow(v_y, 2));
+            double r_max = Math.pow(vel, 2) / 9.81;
+            double h_max = Math.pow(vel, 2) / (2 * 9.81);
+            paint.setTextSize(40);
+            paint.setStrokeWidth(2);
+            canvas.drawText(String.format("%.3f m", r_max), 880, 820, paint);
+            canvas.drawLine(940,40, 940, 800, paint);
+            canvas.drawText(String.format("%.3f m", h_max), 50, 310, paint);
+            canvas.drawLine(20,330, 1000, 330, paint);
+            paint.setColor(Color.BLUE);
+            paint.setStrokeWidth(10);
+            double scale = 900 / r_max;
             for (int i = 0; i < 100; i++) {
                 double t = time / 100 * i;
                 px = v_x * t;
                 py = v_y * t - 0.5 * 9.81 * Math.pow(t, 2);
-                canvas.drawPoint((int) (40 + 3 * px), (int) (780 - 3 * py), paint);
+                canvas.drawPoint((int) (40 + scale * px), (int) (780 - scale * py), paint);
             }
         }
 

@@ -161,21 +161,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        double velocidad, angle, t = 0, v_x = 0, v_y = 0, h_max, range, gravedad = 9.81;
+        double velocidad = 0, angle = 0, t = 0, v_x = 0, v_y = 0, h_max = 0, range = 0, gravedad = 9.81;
         velocidad = Double.parseDouble(edt_velocidad.getText().toString());
         switch (view.getId()) {
             case R.id.btn_angulo:
                 angle = Double.parseDouble(edt_angulo.getText().toString());
-                angulo.setText(angle + "°");
                 angle = Math.toRadians(angle);
                 v_x = velocidad * Math.cos(angle);
                 v_y = velocidad * Math.sin(angle);
                 h_max = Math.pow(v_y, 2) / (2 * gravedad);
                 range = Math.pow(velocidad, 2) * Math.sin(2 * angle) / gravedad;
-                t = 2 * v_y / gravedad;
-                altura_max.setText(String.format("%.3f", h_max));
-                rango.setText(String.format("%.3f", range));
-                tiempo.setText(String.format("%.3f", t));
                 edt_altura_maxima.setText("");
                 edt_rango.setText("");
                 break;
@@ -185,12 +180,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 angle = Math.asin(v_y / velocidad);
                 v_x = velocidad * Math.cos(angle);
                 range = Math.pow(velocidad, 2) * Math.sin(2 * angle) / gravedad;
-                t = 2 * v_y / gravedad;
-                angle = Math.toDegrees(angle);
-                angulo.setText(String.format("%.3f°", angle));
-                altura_max.setText(String.format("%.3f", h_max));
-                rango.setText(String.format("%.3f", range));
-                tiempo.setText(String.format("%.3f", t));
                 edt_angulo.setText("");
                 edt_rango.setText("");
                 break;
@@ -200,16 +189,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 v_x = velocidad * Math.cos(angle);
                 v_y = velocidad * Math.sin(angle);
                 h_max = Math.pow(v_y, 2) / (2 * gravedad);
-                t = 2 * v_y / gravedad;
-                angle = Math.toDegrees(angle);
-                angulo.setText(String.format("%.3f °", angle));
-                altura_max.setText(String.format("%.3f m", h_max));
-                rango.setText(String.format("%.3f m", range));
-                tiempo.setText(String.format("%.3f s", t));
                 edt_angulo.setText("");
                 edt_altura_maxima.setText("");
                 break;
         }
+        t = 2 * v_y / gravedad;
+        angle = Math.toDegrees(angle);
+        angulo.setText(String.format("%.3f °", angle));
+        altura_max.setText(String.format("%.3f m", h_max));
+        rango.setText(String.format("%.3f m", range));
+        tiempo.setText(String.format("%.3f s", t));
         fragmentTransaction = fragmentManager.beginTransaction();
         canvasFragment = new CanvasFragment();
         Bundle bundle = new Bundle();
