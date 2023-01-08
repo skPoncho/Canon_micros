@@ -36,7 +36,11 @@ public class CanvasFragment extends Fragment {
 
         @Override
         public void draw(@NonNull Canvas canvas) {
-
+            Paint paint = new Paint();
+            paint.setColor(Color.BLACK);
+            paint.setStrokeWidth(10);
+            canvas.drawLine(40,40, 40, 800, paint);
+            canvas.drawLine(20,780, 1000, 780, paint);
         }
 
         @Override
