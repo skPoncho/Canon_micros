@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class CanvasFragment extends Fragment {
+    double v_x, v_y, time;
 
     public CanvasFragment() {}
 
@@ -28,6 +30,11 @@ public class CanvasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_canvas, container, false);
+        if (getArguments() != null) {
+            v_x = getArguments().getDouble("v_x");
+            v_y = getArguments().getDouble("v_y");
+            time = getArguments().getDouble("t");
+        }
         ((ImageView) view.findViewById(R.id.image)).setImageDrawable(new Grafica());
         return view;
     }
@@ -39,8 +46,17 @@ public class CanvasFragment extends Fragment {
             Paint paint = new Paint();
             paint.setColor(Color.BLACK);
             paint.setStrokeWidth(10);
-            canvas.drawLine(40,40, 40, 800, paint);
-            canvas.drawLine(20,780, 1000, 780, paint);
+            canvas.drawLine(40,40, 40, 800, paint); // y axis
+            canvas.drawLine(20,780, 1000, 780, paint); // x axis
+            if (getArguments() == null) return;
+            paint.setColor(Color.BLUE);
+            double px, py;
+            for (int i = 0; i < 100; i++) {
+                double t = time / 100 * i;
+                px = v_x * t;
+                py = v_y * t - 0.5 * 9.81 * Math.pow(t, 2);
+                canvas.drawPoint((int) (40 + 3 * px), (int) (780 - 3 * py), paint);
+            }
         }
 
         @Override

@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText edt_velocidad, edt_angulo, edt_altura_maxima, edt_rango;
     TextView angulo, altura_max, rango, tiempo;
     Button btn_angulo, btn_altura_maxima, btn_range;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+    CanvasFragment canvasFragment;
     int state = 0;
 
     Handler bluetoothIn;
@@ -74,8 +79,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lblCapacitor = (TextView)findViewById(R.id.lblCpacitorResultado);
         lblRPM = (TextView)findViewById(R.id.lblRPMResultado);
 
-        CanvasFragment canvasFragment = new CanvasFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.canvas, canvasFragment).commit();
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        canvasFragment = new CanvasFragment();
+        fragmentTransaction.replace(R.id.canvas, canvasFragment).commit();
 
         canvas = (LinearLayout) findViewById(R.id.canvas);
         edt_velocidad = (EditText) findViewById(R.id.edt_velocidad);
@@ -154,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        double velocidad, angle, v_x, v_y, h_max, range, t, gravedad = 9.81;
+        double velocidad, angle, t = 0, v_x = 0, v_y = 0, h_max, range, gravedad = 9.81;
         velocidad = Double.parseDouble(edt_velocidad.getText().toString());
         switch (view.getId()) {
             case R.id.btn_angulo:
@@ -203,6 +210,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 edt_altura_maxima.setText("");
                 break;
         }
+        fragmentTransaction = fragmentManager.beginTransaction();
+        canvasFragment = new CanvasFragment();
+        Bundle bundle = new Bundle();
+        bundle.putDouble("v_x", v_x);
+        bundle.putDouble("v_y", v_y);
+        bundle.putDouble("t", t);
+        canvasFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.canvas, canvasFragment).commit();
     }
 
     //Crea la clase que permite crear el evento de conexion
