@@ -147,11 +147,21 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ccc" />
+
     <LinearLayout
         android:id="@+id/canvas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ccc" />
 
     <TextView
             android:id="@+id/lblCpacitorResultado"

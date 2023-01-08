@@ -1,10 +1,19 @@
 package com.example.proyecto1;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 public class CanvasFragment extends Fragment {
 
@@ -18,6 +27,31 @@ public class CanvasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_canvas, container, false);
+        View view = inflater.inflate(R.layout.fragment_canvas, container, false);
+        ((ImageView) view.findViewById(R.id.image)).setImageDrawable(new Grafica());
+        return view;
+    }
+
+    private class Grafica extends Drawable {
+
+        @Override
+        public void draw(@NonNull Canvas canvas) {
+
+        }
+
+        @Override
+        public void setAlpha(int i) {
+
+        }
+
+        @Override
+        public void setColorFilter(@Nullable ColorFilter colorFilter) {
+
+        }
+
+        @Override
+        public int getOpacity() {
+            return PixelFormat.UNKNOWN;
+        }
     }
 }
