@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 
 import java.util.Set;
 
-public class DispositivosVinculados extends Activity {
+public class DispositivosVinculados extends AppCompatActivity {
 
     private static final String TAG = "DispositivosVinculados";
     ListView IdLista;

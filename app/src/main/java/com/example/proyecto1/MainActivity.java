@@ -1,30 +1,29 @@
 package com.example.proyecto1;
 
-import android.app.*;
-import android.animation.ObjectAnimator;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     TextView lblCapacitor;
     TextView lblRPM;
     String resC = "";
     String resRPM = "";
+    LinearLayout canvas;
     EditText edt_velocidad, edt_angulo, edt_altura_maxima, edt_rango;
     TextView angulo, altura_max, rango, tiempo;
     Button btn_angulo, btn_altura_maxima, btn_range;
@@ -75,6 +74,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         lblCapacitor = (TextView)findViewById(R.id.lblCpacitorResultado);
         lblRPM = (TextView)findViewById(R.id.lblRPMResultado);
 
+        CanvasFragment canvasFragment = new CanvasFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.canvas, canvasFragment).commit();
+
+        canvas = (LinearLayout) findViewById(R.id.canvas);
         edt_velocidad = (EditText) findViewById(R.id.edt_velocidad);
         edt_angulo = (EditText) findViewById(R.id.edt_angulo);
         edt_altura_maxima = (EditText) findViewById(R.id.edt_altura_maxima);
