@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 v_x = velocidad * Math.cos(angle);
                 v_y = velocidad * Math.sin(angle);
                 h_max = Math.pow(v_y, 2) / (2 * gravedad);
-                range = Math.pow(v_x, 2) / (2 * gravedad);
+                range = Math.pow(velocidad, 2) * Math.sin(2 * angle) / gravedad;
                 t = 2 * v_y / gravedad;
                 altura_max.setText(String.format("%.3f", h_max));
                 rango.setText(String.format("%.3f", range));
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 v_y = Math.sqrt(2 * h_max * gravedad);
                 angle = Math.asin(v_y / velocidad);
                 v_x = velocidad * Math.cos(angle);
-                range = Math.pow(v_x, 2) / (2 * gravedad);
+                range = Math.pow(velocidad, 2) * Math.sin(2 * angle) / gravedad;
                 t = 2 * v_y / gravedad;
                 angle = Math.toDegrees(angle);
                 angulo.setText(String.format("%.3f°", angle));
@@ -196,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_rango:
                 range = Double.parseDouble(edt_rango.getText().toString());
-                v_x = Math.sqrt(2 * range * gravedad);
-                angle = Math.acos(v_x / velocidad);
+                angle = Math.asin(gravedad * range / Math.pow(velocidad, 2)) / 2;
+                v_x = velocidad * Math.cos(angle);
                 v_y = velocidad * Math.sin(angle);
                 h_max = Math.pow(v_y, 2) / (2 * gravedad);
                 t = 2 * v_y / gravedad;
